@@ -41,3 +41,19 @@ node['package']['purge'].each do |package|
         action :purge
     end
 end
+
+node['package']['pip_install'].each do |package|
+    log "Installing Python Package #{package}"
+    execute "pip#{node['python']['version']} install #{package}" do
+      command "pip#{node['python']['version']} install #{package}"
+      live_stream true
+    end
+end
+
+node['package']['pip_upgrade'].each do |package|
+    log "Upgrading Python Package #{package}"
+    execute "pip#{node['python']['version']} install #{package} --upgrade" do
+      command "pip#{node['python']['version']} install #{package} --upgrade"
+      live_stream true
+    end
+end
