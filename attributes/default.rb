@@ -14,5 +14,9 @@ default['package']['install'] = []
 default['package']['upgrade'] = []
 default['package']['remove'] = []
 default['package']['purge'] = []
+default['package']['pip_install'] = ['gunicorn']
+default['package']['pip_upgrade'] = ['gunicorn']
 
 default['python']['version'] = "3"
+
+default['pip']['upgrade'] = true
