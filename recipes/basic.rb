@@ -4,6 +4,7 @@
 #
 # Copyright:: 2018, Clivern, All Rights Reserved.
 
+log "recipe::basic"
 
 execute "apt-get update" do
     command "apt-get update"

@@ -4,38 +4,40 @@
 #
 # Copyright:: 2018, Clivern, All Rights Reserved.
 
+log "recipe::package"
 
 node['package']['required'].each do |package|
     log "Installing Package #{package}"
     package "#{package}" do
-      action :install
+        action :install
+        only_if { node['package']['install_required'] }
     end
 end
 
 node['package']['install'].each do |package|
     log "Installing Package #{package}"
     package "#{package}" do
-      action :install
+        action :install
     end
 end
 
 node['package']['upgrade'].each do |package|
     log "Upgrading Package #{package}"
     package "#{package}" do
-      action :upgrade
+        action :upgrade
     end
 end
 
 node['package']['remove'].each do |package|
     log "Removing Package #{package}"
     package "#{package}" do
-      action :remove
+        action :remove
     end
 end
 
 node['package']['purge'].each do |package|
     log "Purging Package #{package}"
     package "#{package}" do
-      action :purge
+        action :purge
     end
 end
