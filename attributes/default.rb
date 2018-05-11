@@ -20,3 +20,15 @@ default['package']['pip_upgrade'] = ['gunicorn']
 default['python']['version'] = "3"
 
 default['pip']['upgrade'] = true
+
+default['app']['base_dir'] = "/var/www/kevin"
+default['app']['branch'] = "master"
+default['app']['repository'] = "https://github.com/Clivern/Kevin.git"
+
+# We Don't recommend to install db with chef
+# Do it manually & make it secure
+default['mysql']['version'] = "5.7"
+default['mysql']['root_password'] = "root"
+default['mysql']['install'] = false
+default['mysql']['create_db'] = false
+default['mysql']['db_name'] = "kevin"
