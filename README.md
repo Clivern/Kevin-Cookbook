@@ -9,7 +9,7 @@ Usage
 
 - Add the following recipes to your node run list.
 
-```json
+```bash
 {
     "run_list": [
         "recipe[kevin-cookbook::default]"
@@ -19,7 +19,7 @@ Usage
 
 - Also add the following attributes to the node.
 
-```json
+```bash
 {
     "mysql": {
         "install": true, // To install MySQL
@@ -35,7 +35,7 @@ We recommend to install MySQL manually on the same server or other server. So
 
 - The node should be something like that:
 
-```json
+```bash
 {
     "name": "node-01",
     "chef_environment": "_default",
