@@ -35,29 +35,28 @@ bash 'setup-application' do
     cd current
     pip#{node['python']['version']} install -r requirements.txt
     LATEST=$(git rev-parse HEAD)
-
-    if [ ! -d "#{node['app']['base_dir']}/releases/$LATEST/" ]; then
+    cd #{node['app']['base_dir']}
+    if [ ! -d "#{node['app']['base_dir']}/releases/$LATEST/" ] || [ #{node['app']['force_deploy']} == "true" ]; then
         cd #{node['app']['base_dir']}/releases
         rm -rf $LATEST
         ls -t | tail -n +#{node['app']['releases_count']} | xargs rm -rf --
         mv current $LATEST
-        ln -sf #{node['app']['base_dir']}/releases/$LATEST #{node['app']['base_dir']}/current
+        ln -sfn #{node['app']['base_dir']}/releases/$LATEST #{node['app']['base_dir']}/current
         rm -rf #{node['app']['base_dir']}/current/.git
         rm -rf #{node['app']['base_dir']}/current/storage
-        ln -sf #{node['app']['base_dir']}/shared #{node['app']['base_dir']}/current/storage
+        ln -sfn #{node['app']['base_dir']}/shared #{node['app']['base_dir']}/current/storage
         chmod -R 775 #{node['app']['base_dir']}/current/storage #{node['app']['base_dir']}/shared
         chown -R www-data:www-data #{node['app']['base_dir']}/current/storage #{node['app']['base_dir']}/shared
         echo $(date) > #{node['app']['base_dir']}/latest_deployment.log
         echo $(date) > #{node['app']['base_dir']}/now.log
     else
-        if [ ! -L "#{node['app']['base_dir']}/releases/current" ]; then
-            ln -sf #{node['app']['base_dir']}/releases/$LATEST #{node['app']['base_dir']}/current
+        if [ ! -L "#{node['app']['base_dir']}/current" ]; then
+            ln -sfn #{node['app']['base_dir']}/releases/$LATEST #{node['app']['base_dir']}/current
             echo $(date) > #{node['app']['base_dir']}/now.log
         fi
-        cd #{node['app']['base_dir']}/releases
-        rm -rf current
-        echo $(date) > #{node['app']['base_dir']}/latest_run.log
+        rm -rf #{node['app']['base_dir']}/releases/current
     fi
+    echo $(date) > #{node['app']['base_dir']}/latest_run.log
     EOH
 end
 
