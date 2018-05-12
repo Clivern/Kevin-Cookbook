@@ -12,6 +12,7 @@ bash "Install MySQL Version #{node['mysql']['version']}" do
         echo "mysql-server-#{node['mysql']['version']} mysql-server/root_password_again password #{node['mysql']['root_password']}" | sudo debconf-set-selections
         apt-get -y install mysql-server-#{node['mysql']['version']}
         service mysql restart
+        apt-get -y install libmysqlclient-dev
     EOH
     only_if { node['mysql']['install'] }
 end

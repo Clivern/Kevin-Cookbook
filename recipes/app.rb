@@ -27,16 +27,19 @@ end
     end
 end
 
-bash 'Setup Application' do
+bash 'setup-application' do
   code <<-EOH
     cd #{node['app']['base_dir']}/releases
     rm -rf current
     git clone -b #{node['app']['branch']} #{node['app']['repository']} current
     cd current
+    pip#{node['python']['version']} install -r requirements.txt
     LATEST=$(git rev-parse HEAD)
+
     if [ ! -d "#{node['app']['base_dir']}/releases/$LATEST/" ]; then
         cd #{node['app']['base_dir']}/releases
-        ls -t | tail -n +5 | xargs rm -rf --
+        rm -rf $LATEST
+        ls -t | tail -n +#{node['app']['releases_count']} | xargs rm -rf --
         mv current $LATEST
         ln -sf #{node['app']['base_dir']}/releases/$LATEST #{node['app']['base_dir']}/current
         rm -rf #{node['app']['base_dir']}/current/.git
@@ -45,13 +48,70 @@ bash 'Setup Application' do
         chmod -R 775 #{node['app']['base_dir']}/current/storage #{node['app']['base_dir']}/shared
         chown -R www-data:www-data #{node['app']['base_dir']}/current/storage #{node['app']['base_dir']}/shared
         echo $(date) > #{node['app']['base_dir']}/latest_deployment.log
+        echo $(date) > #{node['app']['base_dir']}/now.log
     else
         if [ ! -L "#{node['app']['base_dir']}/releases/current" ]; then
             ln -sf #{node['app']['base_dir']}/releases/$LATEST #{node['app']['base_dir']}/current
+            echo $(date) > #{node['app']['base_dir']}/now.log
         fi
         cd #{node['app']['base_dir']}/releases
         rm -rf current
         echo $(date) > #{node['app']['base_dir']}/latest_run.log
     fi
     EOH
+end
+
+
+app_now_file = "#{node['app']['base_dir']}/now.log"
+
+template "#{node['app']['base_dir']}/current/.env" do
+    source 'app/env.erb'
+    owner "root"
+    group "root"
+    mode "0644"
+    action :create_if_missing
+end
+
+template '/etc/nginx/sites-available/kevin.com' do
+    source 'nginx/kevin.conf.erb'
+    owner "root"
+    group "root"
+    mode "0644"
+    action :create_if_missing
+end
+
+link '/etc/nginx/sites-enabled/kevin.com' do
+    to '/etc/nginx/sites-available/kevin.com'
+    action :create
+end
+
+template '/etc/systemd/system/kevin.service' do
+    source 'systemctl/kevin.service.erb'
+    owner "root"
+    group "root"
+    mode "0644"
+    action :create_if_missing
+end
+
+bash 'restart-kevin-service' do
+    code <<-EOF
+        systemctl stop kevin.service
+        systemctl daemon-reload
+        systemctl start kevin.service
+    EOF
+    only_if { ::File.exist?(app_now_file) }
+end
+
+service "nginx" do
+    action :restart
+    only_if { ::File.exist?(app_now_file) }
+end
+
+# Delete The now.log file as it is used as internal notifier for app updates
+bash 'delete-deploy-now-file' do
+    cwd node['app']['base_dir']
+    code <<-EOF
+        rm -f now.log
+    EOF
+    only_if { ::File.exist?(app_now_file) }
 end

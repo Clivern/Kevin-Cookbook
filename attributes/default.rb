@@ -24,6 +24,10 @@ default['pip']['upgrade'] = true
 default['app']['base_dir'] = "/var/www/kevin"
 default['app']['branch'] = "master"
 default['app']['repository'] = "https://github.com/Clivern/Kevin.git"
+default['app']['port'] = 80
+default['app']['fqdn'] = "127.0.0.1"
+default['app']['releases_count'] = 5
+default['app']['force_deploy'] = false
 
 # We Don't recommend to install db with chef
 # Do it manually & make it secure
