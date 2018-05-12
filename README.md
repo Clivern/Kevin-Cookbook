@@ -26,7 +26,7 @@ Usage
         "create_db": true // To Create the DB
     },
     "app": {
-        "fqdn": "206.189.1.19" // Server Domain or IP
+        "fqdn": "xxx.xxx.x.xx" // Server Domain or IP
     }
 }
 ```
@@ -48,7 +48,7 @@ We recommend to install MySQL manually on the same server or other server. So
             "create_db": true
         },
         "app": {
-            "fqdn": "206.189.1.19"
+            "fqdn": "xxx.xxx.x.xx"
         }
     },
     "policy_name": null,
