@@ -22,8 +22,9 @@ Usage
 ```bash
 {
     "mysql": {
-        "install": true, // To install MySQL
-        "create_db": true // To Create the DB
+        "install": true, // To install MySQL (Not Recommended)
+        "create_db": true, // To Create the DB (Not Recommended)
+        "client": true // Recommended to set to true
     },
     "app": {
         "branch": "master",
@@ -42,7 +43,7 @@ Usage
 }
 ```
 
-We recommend to install MySQL manually on the same server or other server. So
+We recommend to install MySQL manually on the same server or another server.
 
 3. The node should be something like that:
 
