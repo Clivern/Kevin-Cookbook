@@ -7,7 +7,7 @@ A Chef Cookbook To Deploy Kevin on Linux Servers.
 Usage
 -----
 
-- Add the following recipes to your node run list.
+1. Add the following recipes to your node run list.
 
 ```bash
 {
@@ -17,7 +17,7 @@ Usage
 }
 ```
 
-- Also add the following attributes to the node.
+2. Also add the following attributes to the node.
 
 ```bash
 {
@@ -28,9 +28,9 @@ Usage
     "app": {
         "branch": "master",
         "repository": "https://github.com/Clivern/Kevin.git",
-        "fqdn": "xxx.xxx.x.xx" // Server Domain or IP
+        "fqdn": "xxx.xxx.x.xx", // Server Domain or IP
         "env": {
-            "APP_KEY": "yxyxyxyxsydysyayysysysys"
+            "APP_KEY": "yxyxyxyxsydysyayysysysys",
             "DB_CONNECTION": "mysql",
             "DB_HOST": "127.0.0.1",
             "DB_PORT": "3306",
@@ -44,7 +44,7 @@ Usage
 
 We recommend to install MySQL manually on the same server or other server. So
 
-- The node should be something like that:
+3. The node should be something like that:
 
 ```bash
 {
@@ -61,9 +61,9 @@ We recommend to install MySQL manually on the same server or other server. So
         "app": {
             "branch": "master",
             "repository": "https://github.com/Clivern/Kevin.git",
-            "fqdn": "xxx.xxx.x.xx" // Server Domain or IP
+            "fqdn": "xxx.xxx.x.xx", // Server Domain or IP
             "env": {
-                "APP_KEY": "yxyxyxyxsydysyayysysysys"
+                "APP_KEY": "yxyxyxyxsydysyayysysysys",
                 "DB_CONNECTION": "mysql",
                 "DB_HOST": "127.0.0.1",
                 "DB_PORT": "3306",
@@ -81,7 +81,7 @@ We recommend to install MySQL manually on the same server or other server. So
 }
 ```
 
-- Finally run the `chef-client` on your node.
+4. Finally run the `chef-client` on your node.
 
 
 Misc
