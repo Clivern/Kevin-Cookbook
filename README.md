@@ -26,7 +26,18 @@ Usage
         "create_db": true // To Create the DB
     },
     "app": {
+        "branch": "master",
+        "repository": "https://github.com/Clivern/Kevin.git",
         "fqdn": "xxx.xxx.x.xx" // Server Domain or IP
+        "env": {
+            "APP_KEY": "yxyxyxyxsydysyayysysysys"
+            "DB_CONNECTION": "mysql",
+            "DB_HOST": "127.0.0.1",
+            "DB_PORT": "3306",
+            "DB_DATABASE": "kevin",
+            "DB_USERNAME": "root",
+            "DB_PASSWORD": "root"
+        }
     }
 }
 ```

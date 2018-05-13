@@ -68,7 +68,12 @@ template "#{node['app']['base_dir']}/current/.env" do
     owner "root"
     group "root"
     mode "0644"
-    action :create_if_missing
+    action :create
+end
+
+execute "run-application-migrations" do
+    command "python#{node['python']['version']} #{node['app']['base_dir']}/current/manage.py migrate"
+    live_stream true
 end
 
 template '/etc/nginx/sites-available/kevin.com' do
@@ -76,7 +81,7 @@ template '/etc/nginx/sites-available/kevin.com' do
     owner "root"
     group "root"
     mode "0644"
-    action :create_if_missing
+    action :create
 end
 
 link '/etc/nginx/sites-enabled/kevin.com' do
@@ -89,7 +94,7 @@ template '/etc/systemd/system/kevin.service' do
     owner "root"
     group "root"
     mode "0644"
-    action :create_if_missing
+    action :create
 end
 
 bash 'restart-kevin-service' do
