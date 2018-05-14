@@ -1,0 +1,14 @@
+server {
+    listen <%= node['app']['port'] %>;
+    server_name <%= node['app']['fqdn'] %>;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root <%= node['app']['base_dir'] %>/current;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:<%= node['app']['base_dir'] %>/current/app.sock;
+    }
+}

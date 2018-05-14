@@ -16,6 +16,13 @@ bash "Install MySQL Version #{node['mysql']['version']}" do
     only_if { node['mysql']['install'] }
 end
 
+bash "Install MySQL Client" do
+    code <<-EOH
+        apt-get -y install libmysqlclient-dev
+    EOH
+    only_if { node['mysql']['client'] }
+end
+
 execute "Create MySQL Database #{node['mysql']['db_name']}" do
     command "mysql -u root -p#{node['mysql']['root_password']} -e 'CREATE DATABASE IF NOT EXISTS #{node['mysql']['db_name']}'"
     live_stream true

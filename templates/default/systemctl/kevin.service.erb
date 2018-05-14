@@ -1,0 +1,12 @@
+[Unit]
+Description=Kevin Service
+After=network.target
+[Service]
+WorkingDirectory=<%= node['app']['base_dir'] %>/current
+SyslogIdentifier=Kevin
+ExecStart=/bin/bash -c "gunicorn --access-logfile - --workers 3 --bind unix:<%= node['app']['base_dir'] %>/current/app.sock app.wsgi:application"
+User=root
+Group=www-data
+Type=simple
+[Install]
+WantedBy=multi-user.target
